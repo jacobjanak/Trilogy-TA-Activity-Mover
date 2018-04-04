@@ -1,5 +1,3 @@
-# ~/documents/code/python/TA-file-mover/mover.py
-
 # imports
 import sys
 import os
