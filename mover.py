@@ -4,53 +4,98 @@ import os
 import shutil
 
 
-# enter the path to your local copy of the FullStack-Lesson-Plans repo
-instructorRepoPath = '/Users/jacobjanak/documents/code/trilogy/FullStack-Lesson-Plans/'
+############################################################################
+### enter the path to your local copy of the FullStack-Lesson-Plans repo ###
+############################################################################
+instructorRepoPath = '/Users/jacobjanak/documents/code/trilogy/FullStack-Lesson-Plans'
+
 
 # get destination and source of activity files
-source = instructorRepoPath + '01-Class-Content/'
+source = instructorRepoPath + '/01-Class-Content/'
 destination = os.getcwd()
 
-# get user inputs from command line arguments
-args = {
-    'week': sys.argv[1],
-    'activity': sys.argv[2]
-}
+
+# ensure the correct amount of arguments were entered
+if len(sys.argv) != 3:
+    raise ValueError("\n\nTo run this file, follow this format:\n" +
+        "python <file-path> <week-number> <activity-number>\n")
+
+
+# get user inputs from command line arguments and make sure they exist
+args = dict()
+try:
+    args['week'] = sys.argv[1]
+    args['activity'] = sys.argv[2]
+
+except IndexError:
+    raise IndexError("\n\nYou must run this file with four arguments like this:\n" +
+        "python <file-path> <week-number> <activity-number>\n")
+
+
+# make sure user input is a number
+def validateIsInt(s):
+    try:
+        int(s)
+
+    except ValueError:
+        raise ValueError("\n\nYou typed '" + s + "' but an integer was expected.\n")
+
+
+# make sure it's a one or two digit number
+def validateNumberLength(s):
+    if 2 < len(s) or len(s) < 1:
+        raise ValueError("\n\nYou typed '" + s + "' but a one or two digit integer was expected.\n")
+
+
+# make sure the users command line args match desired format
+def validateUserInput(s):
+    validateIsInt(s)
+    validateNumberLength(s)
+
+
+# validate user input
+validateUserInput(args['week'])
+validateUserInput(args['activity'])
+
 
 # reformat week
-if len(args['week']) == 1:
-    args['week'] = '0' + args['week']
-if len(args['activity']) == 1:
-    args['activity'] = '0' + args['activity']
+def makeDoubleDigit(s):
+    if len(s) == 1:
+        return '0' + s
 
-# if len of args is not right, break
+    else:
+        return s
 
-# auto complete week
-allWeeks = os.listdir(source)
-for week in allWeeks:
-    if week[:2] == args['week']:
-        source = source + week
-        break
+args['week'] = makeDoubleDigit(args['week'])
+args['activity'] = makeDoubleDigit(args['activity'])
+
+
+# function to find a file within a dir based on a string
+def autocompleteFileName(dir, s):
+    for fileName in os.listdir(dir):
+        if fileName[:len(s)] == s:
+            return fileName
+
+
+# auto complete week for source
+source = source + autocompleteFileName(source, args['week'])
+
 
 # add activities dir to file path
 source = source + '/01-Activities/'
 
-# auto complete activity
-allActivities = os.listdir(source)
-for activity in allActivities:
-    if activity[:2] == args['activity']:
-        source = source + activity
-        break
+
+# auto complete activity for source
+source = source + autocompleteFileName(source, args['activity'])
+
 
 # only get solved folder
 source = source + '/Solved/'
 
+
 # auto complete activity for the destination
-allActivities = os.listdir(destination)
-for activity in allActivities:
-    if activity[:2] == args['activity']:
-        destination = destination + '/' + activity
-        break
+destination = destination + '/' + autocompleteFileName(destination, args['activity'])
+
 
 # move the file
 shutil.move(source, destination)
