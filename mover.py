@@ -21,15 +21,11 @@ if len(sys.argv) != 3:
         "python <file-path> <week-number> <activity-number>\n")
 
 
-# get user inputs from command line arguments and make sure they exist
-args = dict()
-try:
-    args['week'] = sys.argv[1]
-    args['activity'] = sys.argv[2]
-
-except IndexError:
-    raise IndexError("\n\nYou must run this file with four arguments like this:\n" +
-        "python <file-path> <week-number> <activity-number>\n")
+# get user inputs from command line arguments
+args = {
+    'week': sys.argv[1],
+    'activity': sys.argv[2]
+}
 
 
 # make sure user input is a number
