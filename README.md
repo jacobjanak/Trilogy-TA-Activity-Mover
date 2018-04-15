@@ -15,6 +15,6 @@ Easily move solution files from the FullStack-Lesson-Plans repo to your class re
 
 3. Answer the questions it prompts you with.
 
-![Alt text](./example.png?raw=true "Example")
+    ![Alt text](./example.png?raw=true "Example")
 
 4. A `Solved` folder should now appear inside the activity you specified!
