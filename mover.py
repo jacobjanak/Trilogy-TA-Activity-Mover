@@ -15,16 +15,10 @@ source = instructorRepoPath + '/01-Class-Content/'
 destination = os.getcwd()
 
 
-# ensure the correct amount of arguments were entered
-if len(sys.argv) != 3:
-    raise ValueError("\n\nTo run this file, follow this format:\n" +
-        "python <file-path> <week-number> <activity-number>\n")
-
-
-# get user inputs from command line arguments
+# get user inputs from command line
 args = {
-    'week': sys.argv[1],
-    'activity': sys.argv[2]
+    'week': input("Enter unit number: "),
+    'activity': input("Enter activity number: ")
 }
 
 
@@ -95,3 +89,7 @@ destination = destination + '/' + autocompleteFileName(destination, args['activi
 
 # move the file
 shutil.move(source, destination)
+
+
+# success message
+print('File moved successfully!')
